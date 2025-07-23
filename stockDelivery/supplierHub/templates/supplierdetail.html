@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block page_title %}Supplier List{% endblock %}
+{% block content %}
+<h2>{{ supplier.company_name}}</h2>
+{% if suppliers %}
+    <ul>
+        {% for supplier in suppliers %}
+            <li>{{ supplier.company_name }} - {{ supplier.phone }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No suppliers available.</p>
+{% endif %}
+{% endblock %}
