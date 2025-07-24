@@ -5,7 +5,7 @@
 {% if suppliers %}
     <ul>
         {% for supplier in suppliers %}
-            <li>{{ supplier.company_name }} - {{ supplier.phone }}</li>
+            <li> <a href="{% url 'supplierdetail' supplier.pk %}">{{ supplier.company_name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}

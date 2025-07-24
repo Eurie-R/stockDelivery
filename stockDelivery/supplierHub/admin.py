@@ -8,6 +8,7 @@ class SupplierAdmin(admin.ModelAdmin):
     model = Supplier
     list_display = ('company_name', 'user_type', 'phone', 'created_at')
     search_fields = ('company_name', 'user_type')
+    list_filter = ('product_supplied',)
 
 class RestaurantAdmin(admin.ModelAdmin):
     model = Restaurant
@@ -19,7 +20,6 @@ class ProductAdmin(admin.ModelAdmin):
     model = Product
     list_display = ('name', 'price', 'created_at')
     search_fields = ('name',)
-    list_filter = ('supplier',)
 
  # Unregister the default user model
 admin.site.register(Supplier, SupplierAdmin)
