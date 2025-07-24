@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Supplier, Product
+from .forms import OrderForm
 
 def landingpage(request):
     return render(request, 'landingpage.html')
@@ -16,3 +17,30 @@ def supplierdetail(request, pk):
     products = supplier.product_supplied.all()  # Assuming a ManyToMany relationship with Product
     ctx = {'supplier': supplier, 'products': products}
     return render(request, 'supplierdetail.html', ctx)
+
+def productlist(request):
+    # Logic to retrieve and display the list of products
+    products = Product.objects.all()  # Assuming you have a Product model
+    ctx = {'products': products}
+    return render(request, 'productlist.html', ctx)
+
+#TODO 
+#Add autentication and authorization to restrict access to the order form
+#Fix the order form to only show products that the supplier can supply
+#Add to Cart 
+#if restaurant is logged in, automatically fill in the restaurant field in the order form
+#Order form is only for the supplier 
+#Filter the suppliers based on the product 
+# This function handles the order form submission
+
+def orderform(request):
+    if request.method == 'POST':
+        # Handle form submission logic here
+        orderform = OrderForm(request.POST)
+        if orderform.is_valid():
+            order = orderform.save()
+            order.save()
+    else:
+        orderform = OrderForm(request.POST)
+    ctx = {'orderform': orderform}
+    return render(request, 'orderform.html', ctx)

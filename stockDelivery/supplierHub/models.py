@@ -44,3 +44,16 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Order(models.Model):
+    #related name is how you can access the orders from the supplier and restaurant
+    #e.g. supplier.orders.all() or restaurant.orders.all()
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='orders')
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='orders')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orders')
+    quantity = models.PositiveIntegerField(default=1)
+    order_date = models.DateTimeField(auto_now_add=True)
+    arrival_date = models.DateTimeField()
+
+    def __str__(self):
+        return f"Order {self.id} - {self.product.name} for {self.restaurant.restaurant_name}"
