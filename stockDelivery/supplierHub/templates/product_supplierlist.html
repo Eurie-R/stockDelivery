@@ -2,10 +2,10 @@
 {% block page_title %}Supplier List{% endblock %}
 {% block content %}
 <h2>Welcome to the Supplier List</h2>
-{% if products %}
+{% if suppliers %}
     <ul>
-        {% for product in products %}
-            <li><a href="{% url 'get_suppliers_for_product' product.pk %}"> {{ product.name }}</a></li>
+        {% for supplier in suppliers %}
+            <li> <a href="{% url 'supplierdetail' supplier.pk %}">{{ supplier.company_name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}

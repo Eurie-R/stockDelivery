@@ -44,3 +44,10 @@ def orderform(request):
         orderform = OrderForm(request.POST)
     ctx = {'orderform': orderform}
     return render(request, 'orderform.html', ctx)
+
+def getSuppliersForProduct(request, product_id):
+    # Logic to retrieve suppliers for a specific product
+    product = get_object_or_404(Product, id=product_id)
+    suppliers = product.suppliers.all()  # Assuming a ManyToMany relationship with Supplier
+    ctx = {'product': product, 'suppliers': suppliers}
+    return render(request, 'product_supplierlist.html', ctx)
