@@ -55,7 +55,7 @@ ROOT_URLCONF = 'stockDelivery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Directory for custom templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +66,9 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = "/supplierHub/"  # Redirect after login
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 WSGI_APPLICATION = 'stockDelivery.wsgi.application'
 
