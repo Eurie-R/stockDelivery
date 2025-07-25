@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Supplier, Product
-from .forms import OrderForm
+from .forms import OrderForm, SupplierForm, RestaurantForm
+
 
 def landingpage(request):
     return render(request, 'landingpage.html')
@@ -51,3 +52,31 @@ def getSuppliersForProduct(request, product_id):
     suppliers = product.suppliers.all()  # Assuming a ManyToMany relationship with Supplier
     ctx = {'product': product, 'suppliers': suppliers}
     return render(request, 'product_supplierlist.html', ctx)
+
+def signup(request):
+    # Logic for user signup
+    if request.method == 'POST':
+        # Handle signup form submission
+        supplierForm = SupplierForm(request.POST)
+        if supplierForm.is_valid():
+            supplier = supplierForm.save(commit=False)
+            supplier.user_type = 'SUPPLIER'
+            supplier.save()
+    else:
+        supplierForm = SupplierForm()
+    ctx = {'supplierForm': supplierForm}
+    return render(request, 'registration/signup.html',ctx)  # Render the signup template
+
+def restoSignUp(request):
+    # Logic for restaurant signup
+    if request.method == 'POST':
+        # Handle signup form submission
+        restoForm = RestaurantForm(request.POST)
+        if restoForm.is_valid():
+            resto = restoForm.save(commit=False)
+            resto.user_type = 'RESTAURANT'
+            resto.save()
+    else:
+        restoForm = RestaurantForm()
+    ctx = {'restoForm': restoForm}
+    return render(request, 'registration/restoSignUp.html', ctx)  # Render the restaurant signup template
