@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 
@@ -9,8 +10,13 @@ urlpatterns = [
     path('productlist/', views.productlist, name='productlist'),
     path('product_suppliers/<int:product_id>/', views.getSuppliersForProduct, name='get_suppliers_for_product'),
     path('orderform/', views.orderform, name='orderform'), 
-    path('signup/', views.signup, name='signup'),  # Assuming you have a signup view
-    path('restosignup/', views.restoSignUp, name='restosignup'),  # Assuming you have a restaurant signup view
+    path('signup/', views.signup, name='signup'),  
+    path('restosignup/', views.restoSignUp, name='restosignup'), 
+    path('reset_password', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('reset_password_sent', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset_/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
 ]
 
 appname = 'supplierHub'

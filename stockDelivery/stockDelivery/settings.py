@@ -127,3 +127,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #using custom user model
 AUTH_USER_MODEL = 'supplierHub.CustomUser'
+
+#SMTP (Simple mail transfer protocol) settings for sending emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587 #Gmail SMTP port TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = '' 
+
+#remove settings from the file
