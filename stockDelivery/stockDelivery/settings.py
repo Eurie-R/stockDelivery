@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from .secret import email, password
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,12 +33,13 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'supplierHub',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'supplierHub',  # Custom app for supplier and restaurant management
+      # Custom app for supplier and restaurant management
 ]
 
 MIDDLEWARE = [
@@ -133,7 +135,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587 #Gmail SMTP port TLS
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = '' 
-
-#remove settings from the file
+EMAIL_HOST_USER = email
+EMAIL_HOST_PASSWORD = password  # Use the email and password from secret.py
+#remove settings from the git repository
