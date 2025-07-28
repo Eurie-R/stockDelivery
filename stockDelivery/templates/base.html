@@ -31,6 +31,9 @@
 						<a class="nav-link" href="{% url 'productlist' %}">Product List</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="{% url 'cart' %}">View Cart</a>
+					</li>
+					<li class="nav-item">
 						{% if user.is_authenticated %}
 						    <form method="post" action="{% url 'logout' %}">
 						        {% csrf_token %}
@@ -41,6 +44,7 @@
 						    <a href="{% url 'login' %}">Login</a>
 						{% endif %}
 					</li>
+					
 				</ul>
 			</div>
 	</nav>

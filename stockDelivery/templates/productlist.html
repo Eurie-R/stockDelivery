@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block page_title %}Supplier List{% endblock %}
+{% block page_title %}Product list{% endblock %}
 {% block content %}
-<h2>Welcome to the Supplier List</h2>
+<h2>Welcome to the Product List</h2>
 {% if products %}
     <ul>
         {% for product in products %}
@@ -9,6 +9,6 @@
         {% endfor %}
     </ul>
 {% else %}
-    <p>No suppliers available.</p>
+    <p>No products available.</p>
 {% endif %}
 {% endblock %}

@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Supplier, Product
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Supplier, Product, Order
 from .forms import OrderForm, SupplierForm, RestaurantForm
+from django.contrib.auth.decorators import login_required
 
 
 def landingpage(request):
@@ -12,6 +13,7 @@ def supplierlist(request):
     ctx = {'suppliers': suppliers}
     return render(request, 'supplierlist.html',ctx)
 
+
 def supplierdetail(request, pk):
     # Logic to retrieve and display details of a specific supplier
     supplier = get_object_or_404(Supplier, pk=pk)
@@ -19,6 +21,7 @@ def supplierdetail(request, pk):
     ctx = {'supplier': supplier, 'products': products}
     return render(request, 'supplierdetail.html', ctx)
 
+@login_required
 def productlist(request):
     # Logic to retrieve and display the list of products
     products = Product.objects.all()  # Assuming you have a Product model
@@ -34,6 +37,7 @@ def productlist(request):
 #Filter the suppliers based on the product 
 # This function handles the order form submission
 
+@login_required
 def orderform(request):
     if request.method == 'POST':
         # Handle form submission logic here
@@ -41,17 +45,28 @@ def orderform(request):
         if orderform.is_valid():
             order = orderform.save()
             order.save()
+            return redirect('cart')  # Redirect to cart or another page after successful order
     else:
         orderform = OrderForm(request.POST)
     ctx = {'orderform': orderform}
     return render(request, 'orderform.html', ctx)
 
+@login_required
 def getSuppliersForProduct(request, product_id):
     # Logic to retrieve suppliers for a specific product
     product = get_object_or_404(Product, id=product_id)
-    suppliers = product.suppliers.all()  # Assuming a ManyToMany relationship with Supplier
+    suppliers = product.suppliers.filter(product_supplied=product)  # Assuming a ManyToMany relationship with Supplier
     ctx = {'product': product, 'suppliers': suppliers}
     return render(request, 'product_supplierlist.html', ctx)
+
+@login_required
+def cart(request):
+    order = Order.objects.filter(restaurant=request.user)
+    total = sum(order.quantity * order.product.price for order in order)
+    ctx =  {'orders': order, 'total': total}
+    return render(request, 'cart.html', ctx)
+
+
 
 def signup(request):
     # Logic for user signup
@@ -62,6 +77,7 @@ def signup(request):
             supplier = supplierForm.save(commit=False)
             supplier.user_type = 'SUPPLIER'
             supplier.save()
+            return redirect('login')  # Redirect to login or another page after successful signup
     else:
         supplierForm = SupplierForm()
     ctx = {'supplierForm': supplierForm}
@@ -76,6 +92,7 @@ def restoSignUp(request):
             resto = restoForm.save(commit=False)
             resto.user_type = 'RESTAURANT'
             resto.save()
+            return redirect('login')
     else:
         restoForm = RestaurantForm()
     ctx = {'restoForm': restoForm}

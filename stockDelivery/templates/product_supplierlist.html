@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block page_title %}Supplier List{% endblock %}
+{% block page_title %}These are the suppliers{% endblock %}
 {% block content %}
 <h2>Welcome to the Supplier List</h2>
 {% if suppliers %}
     <ul>
         {% for supplier in suppliers %}
-            <li> <a href="{% url 'supplierdetail' supplier.pk %}">{{ supplier.company_name }}</a></li>
+            <li> <a href="{% url 'orderform' %}">{{ supplier.company_name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
