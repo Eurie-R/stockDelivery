@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Supplier, Product, Order
-from .forms import OrderForm, SupplierForm, RestaurantForm
+from .forms import OrderForm, SupplierForm, RestaurantForm, ProductForm, ProductSuppliedForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -66,6 +66,22 @@ def cart(request):
     ctx =  {'orders': order, 'total': total}
     return render(request, 'cart.html', ctx)
 
+#function that allows a supplier to add a product in their inventory
+
+def addProductToSupplier(request):
+    if request.method == 'POST':
+        productForm = ProductForm(request.POST)
+        if productForm.is_valid():
+            # Save the product and associate it with the supplier
+            product = productForm.save(commit=False)
+            supplier = request.user  # Assuming the user is a Supplier
+            supplier.product_supplied.add(product)  
+            return redirect('productlist')  # Redirect to product list after successful addition
+    else:
+        productForm = ProductForm()
+
+    ctx = {'productForm': productForm}
+    return render(request, 'addProduct.html', ctx)  # Render the add product template
 
 
 def signup(request):

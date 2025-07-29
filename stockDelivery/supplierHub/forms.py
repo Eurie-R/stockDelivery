@@ -22,3 +22,14 @@ class RestaurantForm(UserCreationForm):
             'password': forms.PasswordInput(),
         }
    
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price']
+
+
+class ProductSuppliedForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['product_supplied']
+        

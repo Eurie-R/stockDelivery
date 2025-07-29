@@ -14,6 +14,7 @@ urlpatterns = [
     path('restosignup/', views.restoSignUp, name='restosignup'), 
     path('cart/', views.cart, name='cart'),
     #path('checkout/', views.checkout, name='checkout'),
+    path('addProduct/', views.addProductToSupplier, name='addProduct'),
 
 
 
