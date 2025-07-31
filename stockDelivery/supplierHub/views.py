@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Supplier, Product, Order
-from .forms import OrderForm, SupplierForm, RestaurantForm, ProductForm, ProductSuppliedForm
+from .forms import OrderForm, SupplierForm, RestaurantForm, ProductForm, ProductSuppliedForm, AddExistingProductsForm
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponseForbidden
 
 def landingpage(request):
     return render(request, 'landingpage.html')
@@ -69,19 +69,42 @@ def cart(request):
 #function that allows a supplier to add a product in their inventory
 
 def addProductToSupplier(request):
+    try:
+        supplier = Supplier.objects.get(pk=request.user.pk)
+    except Supplier.DoesNotExist:
+        return HttpResponseForbidden("You are not authorized to add products.")
+
     if request.method == 'POST':
         productForm = ProductForm(request.POST)
         if productForm.is_valid():
             # Save the product and associate it with the supplier
-            product = productForm.save(commit=False)
-            supplier = request.user  # Assuming the user is a Supplier
-            supplier.product_supplied.add(product)  
+            product = productForm.save()
+            supplier.save()
+            supplier.product_supplied.add(product)  # Assuming request.user is a Supplier instance
             return redirect('productlist')  # Redirect to product list after successful addition
     else:
         productForm = ProductForm()
 
     ctx = {'productForm': productForm}
     return render(request, 'addProduct.html', ctx)  # Render the add product template
+
+def add_existing_products_to_supplier(request):
+    try:
+        supplier = Supplier.objects.get(pk=request.user.pk)
+    except Supplier.DoesNotExist:
+        return HttpResponseForbidden("You are not authorized to add products.")
+
+    if request.method == 'POST':
+        addform = AddExistingProductsForm(request.POST)
+        if addform.is_valid():
+            products = addform.cleaned_data['products']
+            supplier.product_supplied.add(*products)  # Add selected products to the supplier
+            return redirect('productlist')
+    else:
+        addform = AddExistingProductsForm()
+
+    ctx = {'addform': addform}
+    return render(request, 'add_existing_products.html', ctx)
 
 
 def signup(request):

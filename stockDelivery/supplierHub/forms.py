@@ -32,4 +32,12 @@ class ProductSuppliedForm(forms.ModelForm):
     class Meta:
         model = Supplier
         fields = ['product_supplied']
+
+class AddExistingProductsForm(forms.Form):
+    products = forms.ModelMultipleChoiceField(
+        queryset=Product.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label="Select products to add"
+    )
         
