@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block page_title %}Product list{% endblock %}
+{% block content %}
+<h2>Welcome to the Product List</h2>
+{% if products %}
+    <ul>
+        {% for product in products %}
+            <li><a href="{% url 'get_suppliers_for_product' product.pk %}"> {{ product.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No products available.</p>
+{% endif %}
+{% endblock %}

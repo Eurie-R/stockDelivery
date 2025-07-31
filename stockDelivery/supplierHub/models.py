@@ -21,7 +21,9 @@ class CustomUser(AbstractUser):
         return self.name
 
 class Supplier(CustomUser):
-    company_name = models.CharField(max_length=255, blank=False)
+    company_name = models.CharField(max_length=255, blank=False) 
+    #This supplier supplies these products    
+    product_supplied = models.ManyToManyField('Product', related_name='suppliers')
 
     def __str__(self):
         return self.company_name
@@ -34,7 +36,7 @@ class Restaurant(CustomUser):
 
 #Product can have multiple suppliers that can supply it
 class Product(models.Model):
-    supplier = models.ManyToManyField(Supplier, related_name='products')
+    #supplier = models.ManyToManyField(Supplier, related_name='products')
     name = models.CharField(max_length=255, blank=False)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
@@ -42,3 +44,16 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Order(models.Model):
+    #related name is how you can access the orders from the supplier and restaurant
+    #e.g. supplier.orders.all() or restaurant.orders.all()
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='orders')
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='orders')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='orders')
+    quantity = models.PositiveIntegerField(default=1)
+    order_date = models.DateTimeField(auto_now_add=True)
+    arrival_date = models.DateTimeField()
+
+    def __str__(self):
+        return f"Order {self.id} - {self.product.name} for {self.restaurant.restaurant_name}"

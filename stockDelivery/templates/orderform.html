@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block page_title %}Order Form{% endblock %}
+
+{% block content %}
+<h2>Order Form</h2>
+
+<b>Order</b>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ orderform.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}
