@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('supplierHub/', include('supplierHub.urls')),  # Include the supplierHub app URLs
+    path("accounts/", include("django.contrib.auth.urls")),
 ]

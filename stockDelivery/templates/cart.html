@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+<h1>Cart</h1> 
+
+
+{% if orders %}
+    <h2>Items in Cart</h2>
+    <ul>
+        {% for order in orders %}
+            <li>{{ order.product.name }} - {{ order.amount }} pcs</li>
+        {% endfor %}
+    </ul>
+    <h3>Total: {{ total }}</h3>
+    <p>Proceed to Checkout</p>
+{% endif %}
+
+
+{% if not orders %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}
